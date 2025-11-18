@@ -1,6 +1,9 @@
 package main
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 var Handlers = map[string]func([]Value) Value{
 	"PING":    ping,
@@ -110,8 +113,7 @@ func hgetall(args []Value) Value {
 	}
 
 	for key, item := range value {
-		result = append(result, Value{typ: "bulk", bulk: key})
-		result = append(result, Value{typ: "bulk", bulk: item})
+		result = append(result, Value{typ: "bulk", bulk: fmt.Sprintf("%v: %v", key, item)})
 	}
 
 	HSETLock.RUnlock()

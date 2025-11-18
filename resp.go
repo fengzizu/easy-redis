@@ -82,11 +82,13 @@ func (r *Resp) readArray() (Value, error) {
 	v := Value{}
 	v.typ = "array"
 
+	// read length of array
 	length, _, err := r.readInteger()
 	if err != nil {
 		return v, err
 	}
 
+	// foreach line, parse and read the value
 	v.array = make([]Value, length)
 	for i := 0; i < length; i++ {
 		val, err := r.Read()
@@ -94,6 +96,7 @@ func (r *Resp) readArray() (Value, error) {
 			return v, err
 		}
 
+		// add parsed value to array
 		v.array[i] = val
 	}
 
